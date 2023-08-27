@@ -56,7 +56,6 @@ export default class App1 extends Component {
 
                         <Route exact path='/' element={<Home />} />
 
-                        {/* <Route Component={Welcome} /> */}
                     </Routes>
                     <Footer />
                 </BrowserRouter>

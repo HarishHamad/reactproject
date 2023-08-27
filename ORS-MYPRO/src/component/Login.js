@@ -1,136 +1,117 @@
+import React,{Component} from "react";
+import { Form, Button } from "react-bootstrap";
+// import BaseCtrl from "./BaseCtrl";
 import axios from "axios";
-import React, { Component } from "react";
-// import * as ReactDOM from 'react-dom';
-import ReactDOM from "react-dom/client";
-import { Link } from "react-router-dom";
+import withRouter from "../componet2/withRouter";
+// import DashBoard from "./DashBoard";
+import ReactDOM from "react-dom";
+
 import App1 from "./App1";
-export default class Login extends Component {
-  constructor() {
-    super();
+// import FormMessage from "./FormMessage";
+class Login extends Component {
+  constructor(props) {
+    super(props);
     this.state = {
-      loginId: "",
+      email: "",
       password: "",
-      "inputerror": {
-        "password": "",
-        "loginId": ""
-      }
+     
     };
   }
-  submit(event) {
-    event.preventDefault();
-    this.setState({
-      data: "", loginId: "", password: "", message: '',
-      "inputerror": {
-        "password": "", "loginId": ""
-      }
-    })
-    const url = "http://api.sunilos.com:9080/ORSP10/Auth/login"
-    axios.post(url, this.state).then((response) => {
-      console.log(response.data)
-      if (response.data.result.inputerror) {
-        this.setState({ inputerror: response.data.result.inputerror })
-      } else if (response.data.result.message) {
-        this.props.showAlert(response.data.result.message, "info")
-      }
-      else if (response.data.success) {
-        localStorage.setItem("Name", response.data.result.data.name)
-        // alert("form has been submitted");
-        // first way
-        // return ReactDOM.render(
-        //   <React.StrictMode>
-        //     <Dashboard/>
-        //   </React.StrictMode>,
-        //   document.getElementById("root")
-        // );
+  signIn() {
+    axios
+      .post("http://localhost:3308/au/loginPage/", this.state)
+      .then((res) => {
+        console.log(res);
+        this.setState({ list: res.data.result });
+        console.log(res.data);
 
-        //Second way
-
-        const root = ReactDOM.createRoot(document.getElementById("root"));
-        root.render(
-          <React.StrictMode>
-            <App1 />
-          </React.StrictMode>
-        );
-      } else { this.setState({ data: "Ab kya hai bhai" }) }
-    })
+        if (res.data) {
+          console.log(res.data)
+          return ReactDOM.render(
+            <React.StrictMode>
+              
+              <App1/>
+            </React.StrictMode>,
+            document.getElementById("root")
+          );
+         
+        }   
+      })
+   
   }
-  reset() {
-    this.setState({
-      loginId: "",
-      password: "",
-      data: "",
-      "inputerror": {
-        "password": "",
-        "loginId": ""
-      }
-    })
-  }
+  resetForm = () => {
+  
+  };
 
   render() {
     return (
-      <div className="container" style={{ marginTop: '80px', width: "30%", border: "1px solid gray", padding: "30px", borderRadius: "50px" }}>
-        <h1 className="text-uppercase text-center mb-5">LOGIN FORM</h1>
-        <form >
-          <div className="form-group">
-            <label htmlFor="exampleInputEmail1">Email address</label>
-            <input
-              type="email"
-              className="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              placeholder="Enter email"
-              onChange={(event) => {
-                this.setState({ loginId: event.target.value });
-              }}
-              name="loginId"
-              value={this.state.loginId}
-            />
-            <p style={{ color: "red", margin: "10px" }}>{this.state.inputerror.loginId}</p>
-          </div>&nbsp;
-          <div className="form-group">
-            <label htmlFor="exampleInputPassword1">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              id="exampleInputPassword1"
-              placeholder="Password"
-              onChange={(event) =>
-                this.setState({ password: event.target.value })
-              }
-              name="password"
-              value={this.state.password}
-            />
-            <p style={{ color: "red", margin: "10px" }}>{this.state.inputerror.password}</p>
-          </div>
-          <h3 style={{ color: "green", margin: "10px" }}>{this.state.data}</h3>
-          <div className='row pt-3'>
-            <div className='col-md-6 d-flex justify-content-center align-items-center'>
-              <button
-                type="btn"
-                className="btn btn-success btn-block btn-lg gradient-custom-4 text-body "
-                onClick={(event) => { this.submit(event) }}
-              >
-                Submit
-              </button>
-            </div>
-            <div className='col-md-6 d-flex justify-content-center align-items-center'>
-              <button
-                type="reset"
-                className="btn btn-primary btn-block btn-lg gradient-custom-4 text-body "
-                onClick={() => { this.reset() }}
-              >
-                Reset
-              </button>
-            </div>
-          </div>
-          <p className="text-center text-muted mt-1 mb-0">
-            You have no an account?{" "}
-            <Link to="/registration" className="fw-bold text-body">
-              <u>Create an account</u>
-            </Link>
-          </p>
-        </form>
-      </div>
+      <>
+        <div align="center" className="Auth-form-container">
+          <h2 align="center">LogIn</h2>
+          <Form className="Auth-form-login">
+            <table className="Auth-form-content" style={{ marginTop:"50px"}}>
+              <div>
+                
+                
+                <h2 style={{ color: "red" }}>
+                  {" "}
+                  
+                </h2>
+                <h2 style={{ color: "red" }}> {this.state.error}</h2>
+              </div>
+              <div className="form-group mt-3">
+                <label>email</label>
+                <input
+                  className="form-control mt-1"
+                  placeholder="Enter Login Id"
+                  name="email"
+                  onChange={(event) =>
+                    this.setState({ email: event.target.value })
+                  }
+                  value={this.state.email}
+                  required
+                />
+
+              </div>
+              <div className="form-group mt-3">
+                <label>Password</label>
+                <input
+                  className="form-control mt-1"
+                  placeholder="Enter Password"
+                  name="password"
+                  type={"password"}
+                  onChange={(event) =>
+                    this.setState({ password: event.target.value })
+                  }
+                  value={this.state.password}
+                  required
+                />
+              
+              </div>
+
+              <div className="form-group mt-3">
+                <Button
+                  type="button"
+                  onClick={() => this.signIn()}
+
+                >
+                  SignIn
+                </Button>
+                &nbsp; &nbsp;
+                <Button
+                  type="reset"
+                  variant="danger"
+                  onClick={(event) => this.resetForm(event)}
+                >
+                  Reset
+                </Button>
+              </div>
+            </table>
+            <br></br>
+          </Form>
+        </div>
+      </>
     );
   }
 }
+export default withRouter(Login);

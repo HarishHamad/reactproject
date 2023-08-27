@@ -10,7 +10,7 @@ export default class Dashboard1 extends Component {
         <nav className="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
           <div className="container-fluid">
 
-            <img src={require("../image/Logo.jpg")} alt="..." width="100" height="50" style={{ borderRadius: "12px" }} />
+            <img src={require("../image/rays.png")} alt="..." width="100" height="50" style={{ borderRadius: "12px" }} />
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
             </button>

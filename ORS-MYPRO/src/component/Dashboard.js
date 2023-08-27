@@ -21,7 +21,7 @@ export default class Dashboard extends Component {
 
                 <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
                     <Container>
-                        <img src={require("../image/Logo.jpg")} alt="..." width="100" height="50" style={{ borderRadius: "12px", marginLeft: "-55px", marginRight: "30px" }} />
+                        <img src={require("../image/rays.png")} alt="..." width="100" height="50" style={{ borderRadius: "12px", marginLeft: "-55px", marginRight: "30px" }} />
 
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">

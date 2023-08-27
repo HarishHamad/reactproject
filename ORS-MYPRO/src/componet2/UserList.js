@@ -2,84 +2,75 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 export default class UserList extends Component {
   constructor() {
     super();
     this.state = {
-      list: [],
-      firstName: '',
-      lastName: '',
-      loginId: '',
-      password: '',
-      roleId: '',
-      id: ''
-    }
+      post: [],
+      id:'',
+      name:'',
+      email:'',
+      password:''
+     
+    } 
   }
-
-
+ 
+  
   update() {
     let url = "http://api.sunilos.com:9080/ORSP10/User/search";
     axios.post(url, this.state).then((res) => {
       this.setState({ list: res.data.result.data })
-      // console.error(this.state.list)
+      console.warn(this.state.list)
     }
     )
   }
   componentDidMount() {
-    this.update();
+    axios.get("http://localhost:3308/empGet/search").then((res) => {
+      console.log(res.data.list);
+      this.setState({ post: res.data.list });
+    });
   }
-  delete(key) {
-    let url = "http://api.sunilos.com:9080/ORSP10/User/delete/" + key;
+  delete(id) {
+    let url = "http://localhost:3308/empDelete/delete/" + id;
     axios.get(url).then((res) => {
-      this.update();
-    })
+      this.post = res.data.list;
+      // console.log(res.data.result);
+
+      this.componentDidMount();
+    });
   }
   render() {
     return (
-      <div style={{ marginTop: '80px', textAlign: "center" }}>
-        <h1 >LIST OF USER</h1>
-        <hr />
-        <form id="sign-in-form" className="text-left text-center">
-          <span>
-            <input type="text" name="name" placeholder='Search by First name' value={this.state.firstName}
-              onChange={(event) => { this.setState({ firstName: event.target.value }) }} />
-          </span> &nbsp; &nbsp; &nbsp;
-          <span>
-            <input type="text" name="address" placeholder='Search by Last name'
-              value={this.state.lastName} onChange={(event) => { this.setState({ lastName: event.target.value }) }} />
-          </span> &nbsp; &nbsp; &nbsp;
-          <span className='bg-info'>
-            <button type='button' onClick={() => this.update()}>Search</button>
-          </span>
-        </form>
-        <hr />
-        <Table striped bordered hover >
+      <div className='bg' style={{marginTop:"70px"}}>
+        <h1 >User List page</h1>
+        <Table striped bordered hover>
           <thead>
             <tr >
               <th>#</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email id's</th>
-              <th>Role id's</th>
-              <th colSpan={2} >Operation</th>
+              <th>id</th>
+              <th>name</th>
+              <th>email</th>
+              <th>password</th>
+              <th colSpan='2' cellspacing='15px'>Operation</th>
             </tr>
           </thead>
           <tbody>
             {
-              this.state.list.map((item, i) => {
+              this.state.post.map((item, i) => {
                 return (
                   <tr key={item.id}>
-                    <td>{i + 1}</td>
-                    <td>{item.firstName}</td>
-                    <td>{item.lastName}</td>
-                    <td>{item.loginId}</td>
-                    <td>{item.roleId}</td>
-                    <td> <Link to={"/adduser/" + item.id} ><FontAwesomeIcon icon={faEdit} style={{color: "blue",fontSize:"25px"}} /></Link></td>
-                    <td><button type='button' onClick={() => this.delete(item.id)}><FontAwesomeIcon icon={faTrash} style={{color: "red"}} /></button></td>
-                  </tr>
+                    <td>{i+1}</td>
+                    <td>{item.id}</td>
+                    <td>{item.name}</td>
+                    <td>{item.email}</td>
+                    <td>{item.password}</td>
+                    
+                    <td> <Link  to={ "/adduser/" + item.id } >Edit</Link></td>
+                    <td>
+                        <button onClick={() => this.delete(item.id)}>Delete</button>
+                    </td>
+                 </tr>
                 )
               })
             }

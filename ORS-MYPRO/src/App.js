@@ -9,6 +9,7 @@ import Home from './component/Home';
 import Footer from './componet2/Footer';
 import Alert from './componet2/Alert';
 
+
 // import App1 from './component/App1';
 
 export default class App extends Component {
@@ -33,7 +34,7 @@ export default class App extends Component {
           <Alert alert={this.state.alert} />
           <Routes>
             <Route path='/' element={<Home />} />
-            <Route path='/registration' element={<Registration showAlert={this.showAlert} />} />
+            <Route path='/registration' element={<Registration  showAlert={this.showAlert} />} />
             <Route path='/login' element={<Login showAlert={this.showAlert}/>}  />
           </Routes>
           <Footer />
